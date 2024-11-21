@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Player</title>
+</head>
+<body>
+    <h2>Edit Player</h2>
+    <form method="POST">
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="{{ player.name }}" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" value="{{ player.email }}" required><br>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" value="{{ player.age }}" required><br>
+
+        <label for="role">Role:</label>
+        <input type="text" name="role" value="{{ player.role }}" required><br>
+
+        <label for="city">City:</label>
+        <input type="text" name="city" value="{{ player.city }}" required><br>
+
+        <label for="strike_rate">Strike Rate:</label>
+        <input type="text" name="strike_rate" value="{{ player.strike_rate }}" required><br>
+
+        <label for="is_captain">Is Captain?</label>
+        <input type="checkbox" name="is_captain" {% if player.is_captain %} checked {% endif %}><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>

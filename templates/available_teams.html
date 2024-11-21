@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Teams</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            font-size: 28px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-control-select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            text-align: center;
+            background: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+        }
+
+        /* Team List */
+        .team-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .team-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f0f0f0;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .team-item:hover {
+            background-color: #e0ffe0;
+        }
+
+        .team-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .team-id {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* No Teams Message */
+        .no-teams {
+            text-align: center;
+            font-size: 18px;
+            color: #d9534f;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Available Teams</h1>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <form action="{{ url_for('process_selection') }}" method="POST">
+                <!-- Date Selection -->
+                <label class="form-label" for="match-date">Select Match Date:</label>
+                <input type="date" id="match-date" name="match_date" class="form-control">
+
+                <!-- Time Selection -->
+                <label class="form-label" for="match-time">Select Match Time:</label>
+                <input type="time" id="match-time" name="match_time" class="form-control">
+
+                <!-- Location Selection -->
+                <label class="form-label" for="match-location">Match Location:</label>
+                <input type="text" id="match-location" name="match_location" class="form-control" placeholder="Enter location">
+
+                <!-- Over Selection -->
+                <label class="form-label" for="overs">Select Overs:</label>
+                <select id="overs" name="overs" class="form-control-select">
+                    <option value="1">1 Over</option>
+                    <option value="10">10 Overs</option>
+                    <option value="20">20 Overs</option>
+                    <option value="50">50 Overs</option>
+                </select>
+
+                <!-- Team Selection -->
+                <label class="form-label" for="team">Select Team:</label>
+                <select id="team" name="team" class="form-control-select">
+                    {% for team in teams %}
+                        <option value="{{ team['id'] }}">{{ team['team_name'] }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Send Match Details</button>
+            </form>
+        </div>
+
+        <!-- Team List -->
+        {% if teams %}
+            <ul class="team-list">
+                {% for team in teams %}
+                    <li class="team-item">
+                        <div class="team-name">{{ team['team_name'] }}</div>
+                        <div class="team-id">Team ID: {{ team['id'] }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="no-teams">No teams available with 15 or more players.</div>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}" class="submit-btn">Back to Home</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">Cricket Registration</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Registration Form Section -->
+<div class="container mt-5">
+    <h3 class="text-center">Player Registration</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <!-- Player Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Player Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email (Optional)</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+
+        <!-- Age -->
+        <div class="mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input type="number" class="form-control" id="age" name="age" required>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select class="form-select" id="role" name="role" required>
+                <option value="" disabled selected>Select a Role</option>
+                <option value="Batsman">Batsman</option>
+                <option value="Bowler">Bowler</option>
+                <option value="All-Rounder">All-Rounder</option>
+                <option value="Wicketkeeper">Wicketkeeper</option>
+            </select>
+        </div>
+
+        <!-- City -->
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" required>
+        </div>
+
+        <!-- Strike Rate -->
+        <div class="mb-3">
+            <label for="strike_rate" class="form-label">Strike Rate</label>
+            <input type="text" class="form-control" id="strike_rate" name="strike_rate" required>
+        </div>
+
+        <!-- Captain Checkbox -->
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="is_captain" name="is_captain">
+            <label for="is_captain" class="form-check-label">Mark as Captain</label>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="mb-3">
+            <label for="photo" class="form-label">Player Photo (Optional)</label>
+            <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success w-100">Register Player</button>
+    </form>
+    
+    <!-- Registered Players Table -->
+    <h4 class="mt-5">Registered Players</h4>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Role</th>
+                <th>City</th>
+                <th>Strike Rate</th>
+                <th>Photo</th>
+                <th>Captain</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ player.name }}</td>
+                <td>{{ player.email or 'N/A' }}</td>
+                <td>{{ player.age }}</td>
+                <td>{{ player.role }}</td>
+                <td>{{ player.city }}</td>
+                <td>{{ player.strike_rate }}</td>
+                <td>
+                    {% if player.photo %}
+                    <img src="{{ url_for('static', filename='uploads/' + player.photo) }}" width="50" height="50">
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </td>
+                <td>{{ 'Yes' if player.is_captain else 'No' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- Next button to navigate to available teams -->
+<form action="{{ url_for('available_teams') }}" method="GET" class="next-button-form">
+    <button type="submit" class="next-button">Next</button>
+</form>
+<!-- Next Button Styling -->
+<style>
+    .next-button-form {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .next-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .next-button:hover {
+        background-color: blue;
+    }
+</style>
+
+</body>
+</html>

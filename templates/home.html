@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <style>
+        /* Background Image */
+        body {
+            background-image: url('https://wallpaperaccess.com/full/3818743.jpg'); /* Cricket GIF */
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: rgba(0, 128, 0, 0.7); /* A semi-transparent green */
+        }
+
+        .scrolling-text {
+            position: fixed;
+            top: 50px;
+            width: 100%;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Left to Right Scrolling */
+        .scrolling-text-left-to-right {
+            animation: scroll-left 10s linear infinite;
+        }
+
+        /* Right to Left Scrolling */
+        .scrolling-text-right-to-left {
+            animation: scroll-right 10s linear infinite;
+        }
+
+        /* Animations for scrolling text */
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes scroll-right {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .container h1, .container p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional text shadow for better readability */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">Cricket Registration</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register_team') }}">Register Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Scrolling Text from Left to Right -->
+<div class="scrolling-text scrolling-text-left-to-right">
+    cup its mine
+</div>
+
+<!-- Scrolling Text from Right to Left -->
+<div class="scrolling-text scrolling-text-right-to-left">
+    welcome to warriors
+</div>
+
+<div class="container mt-5 text-center">
+    <h1>Welcome to Cricket Team Registration</h1>
+    <p>Register your team and players for upcoming matches.</p>
+</div>
+
+</body>
+</html>
