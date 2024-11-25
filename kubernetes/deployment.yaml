@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cricket-warrior-deployment
+  labels:
+    app: cricket-warrior
+spec:
+  replicas: 3 # Number of pod replicas
+  selector:
+    matchLabels:
+      app: cricket-warrior
+  template:
+    metadata:
+      labels:
+        app: cricket-warrior
+    spec:
+      containers:
+      - name: cricket-warrior
+        image: ramankms/cricket-warrior:latest
+        ports:
+        - containerPort: 80 # Change to the port your application listens on
+        env:
+        - name: ENV
+          value: "production" # Example environment variable
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cricket-warrior-service
+spec:
+  selector:
+    app: cricket-warrior
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80 # Match containerPort in the Deployment
+  type: LoadBalancer # Change to NodePort or ClusterIP as needed
