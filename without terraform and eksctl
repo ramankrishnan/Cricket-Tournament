@@ -1,0 +1,53 @@
+#!/bin/bash
+# EC2 User Data Script - Ubuntu 22.04
+# Setup Java, Jenkins, Docker, SonarQube, AWS CLI, Kubectl, Trivy, Maven
+
+# Update system
+apt update -y
+
+# Install Java (OpenJDK 17)
+apt install openjdk-17-jdk -y
+
+# Install Maven
+apt install maven -y
+
+# Install Jenkins
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian binary/ | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+apt update -y
+apt install jenkins -y
+
+# Install Docker
+apt install docker.io -y
+usermod -aG docker jenkins
+usermod -aG docker ubuntu
+systemctl enable docker
+systemctl start docker
+chmod 777 /var/run/docker.sock
+
+# Run SonarQube container
+docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+
+# Install AWS CLI
+apt install unzip -y
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+
+# Install kubectl
+curl -LO "https://dl.k8s.io/release/v1.28.4/bin/linux/amd64/kubectl"
+chmod +x kubectl
+mv kubectl /usr/local/bin/kubectl
+
+# Install Trivy
+apt-get install wget apt-transport-https gnupg lsb-release -y
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
+echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list
+apt update
+apt install trivy -y
+
+# Cleanup
+rm -rf awscliv2.zip aws/
+
+# Final message to cloud-init logs
+echo "Setup complete" >> /var/log/cloud-init-output.log
